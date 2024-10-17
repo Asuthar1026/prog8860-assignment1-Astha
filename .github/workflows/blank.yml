@@ -1,0 +1,41 @@
+name: Reactapp
+ 
+on:
+  pull_request:
+    branches:
+      - main
+      
+  push:
+    branches:
+      - feature_astha
+ 
+jobs:
+  build:
+    runs-on: ubuntu-latest
+ 
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+ 
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+ 
+    - name: Install dependencies
+      run: npm install
+ 
+    - name: Build Docker image
+      run: docker build -t react-app.
+ 
+    - name: Run Docker container
+      run: docker run -d -p 3000:3000 --name my-reactapp -p react-app
+      
+ 
+    - name: Show running container
+      run: docker ps
+ 
+    - name: Stop container
+      run: |
+        docker stop my-reactapp
+        docker rm my-reactapp
